@@ -50,6 +50,7 @@ class ViewController: UIViewController {
     @IBAction func togglePlay(_ sender: Any) {
         if let rateValue = (inputRate.text as NSString?){
             controller.player.rate = rateValue.floatValue
+            controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(rateValue.floatValue)))
             //note : as far as I know, AVPlayer only can use rate (fastforward) no more than 2x (source: https://medium.com/chameleon-podcast/creating-an-advanced-streaming-audio-engine-for-ios-9fbc7aef4115)
         }
         if !controller.audioSessionController.audioSessionIsActive {
@@ -150,7 +151,6 @@ class ViewController: UIViewController {
                         self.controller.player.rate = rateValue.floatValue
                     }
                     self.controller.player.play()
-                    return
                 }
                 self.loadIndicator.stopAnimating()
                 self.updateTimeValues()
