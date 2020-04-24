@@ -103,6 +103,16 @@ class ViewController: UIViewController {
         self.slider.setValue(Float(self.controller.player.currentTime), animated: true)
         self.elapsedTimeLabel.text = self.controller.player.currentTime.secondsToString()
         self.remainingTimeLabel.text = (self.controller.player.duration - self.controller.player.currentTime).secondsToString()
+        if controller.player.playerState == .buffering || controller.player.playerState == .loading {
+            self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.elapsedPlaybackTime(self.controller.player.currentTime))
+            self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(0))
+        }
+        else {
+            if let rateValue = (self.inputRate.text as NSString?){
+                //self.controller.player.rate = rateValue.floatValue
+                self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(rateValue.floatValue)))
+            }
+        }
     }
     
     func updateMetaData() {
@@ -142,18 +152,28 @@ class ViewController: UIViewController {
                 self.loadIndicator.stopAnimating()
                 self.updateMetaData()
                 self.updateTimeValues()
-            case .playing, .paused, .idle:
+            case .playing , .idle:
+                self.loadIndicator.stopAnimating()
+                self.updateTimeValues()
+            case .paused:
                 if self.isPaused == false{
+                    
+                    let index = self.controller.sources.last
+                    
+                    if index?.getTitle() == self.controller.player.currentItem?.getTitle() && Int(self.controller.player.currentTime) >= Int(self.controller.player.duration){
+                        self.isPaused = true
+                        self.controller.player.pause()
+                        return
+                    }
                     
                     //add handle if player keep pausing a song (if user don't tap pause button)
                     self.controller.player.automaticallyWaitsToMinimizeStalling = true
                     if let rateValue = (self.inputRate.text as NSString?){
                         self.controller.player.rate = rateValue.floatValue
+                        self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(rateValue.floatValue)))
                     }
                     self.controller.player.play()
                 }
-                self.loadIndicator.stopAnimating()
-                self.updateTimeValues()
                 
             }
         }
