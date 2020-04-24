@@ -59,6 +59,8 @@ class ViewController: UIViewController {
             lastLoadFailed = false
             errorLabel.isHidden = true
             isPaused = false
+            controller.player.bufferDuration = 0.001
+            controller.player.automaticallyWaitsToMinimizeStalling = false
             try? controller.player.load(item: item, playWhenReady: true)
         }
         else {
@@ -143,7 +145,7 @@ class ViewController: UIViewController {
                 if self.isPaused == false{
                     
                     //add handle if player keep pausing a song (if user don't tap pause button)
-                    
+                    self.controller.player.automaticallyWaitsToMinimizeStalling = true
                     if let rateValue = (self.inputRate.text as NSString?){
                         self.controller.player.rate = rateValue.floatValue
                     }
