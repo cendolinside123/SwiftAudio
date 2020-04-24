@@ -133,7 +133,16 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
     }
     
     func play() {
-        avPlayer.play()
+        print("rate : \(self.rate)")
+        
+        if self.rate == 0.0 {
+            avPlayer.playImmediately(atRate: 1)
+        }
+        else {
+            avPlayer.playImmediately(atRate: self.rate)
+        }
+        
+//        avPlayer.play()
     }
     
     func pause() {
