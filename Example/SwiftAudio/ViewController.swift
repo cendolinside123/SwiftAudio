@@ -23,10 +23,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var loadIndicator: UIActivityIndicatorView!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var inputRate: UITextField!
     
     private var isScrubbing: Bool = false
     private let controller = AudioController.shared
-    private var lastLoadFailed: Bool = false
+    private var lastLoadFailed: Bool = true
+    
+    private var isPaused: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,18 +41,34 @@ class ViewController: UIViewController {
         controller.player.event.fail.addListener(self, handlePlayerFailure)
         updateMetaData()
         handleAudioPlayerStateChange(data: controller.player.playerState)
+        
+        let tab = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tab)
+        
     }
     
     @IBAction func togglePlay(_ sender: Any) {
+        if let rateValue = (inputRate.text as NSString?){
+            controller.player.rate = rateValue.floatValue
+            //note : as far as I know, AVPlayer only can use rate (fastforward) no more than 2x (source: https://medium.com/chameleon-podcast/creating-an-advanced-streaming-audio-engine-for-ios-9fbc7aef4115)
+        }
         if !controller.audioSessionController.audioSessionIsActive {
             try? controller.audioSessionController.activateSession()
         }
         if lastLoadFailed, let item = controller.player.currentItem {
             lastLoadFailed = false
             errorLabel.isHidden = true
+            isPaused = false
             try? controller.player.load(item: item, playWhenReady: true)
         }
         else {
+            if isPaused == false{
+                isPaused = true
+            }
+            else if isPaused == true {
+                isPaused = false
+            }
+            
             controller.player.togglePlaying()
         }
     }
@@ -123,6 +142,15 @@ class ViewController: UIViewController {
             case .playing, .paused, .idle:
                 self.loadIndicator.stopAnimating()
                 self.updateTimeValues()
+                if self.isPaused == false{
+                    
+                    //add handle if player keep pausing a song (if user don't tap pause button)
+                    
+                    if let rateValue = (self.inputRate.text as NSString?){
+                        self.controller.player.rate = rateValue.floatValue
+                    }
+                    self.controller.player.play()
+                }
             }
         }
     }
