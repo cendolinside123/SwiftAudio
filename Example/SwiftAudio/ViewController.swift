@@ -140,8 +140,6 @@ class ViewController: UIViewController {
                 self.updateMetaData()
                 self.updateTimeValues()
             case .playing, .paused, .idle:
-                self.loadIndicator.stopAnimating()
-                self.updateTimeValues()
                 if self.isPaused == false{
                     
                     //add handle if player keep pausing a song (if user don't tap pause button)
@@ -150,7 +148,11 @@ class ViewController: UIViewController {
                         self.controller.player.rate = rateValue.floatValue
                     }
                     self.controller.player.play()
+                    return
                 }
+                self.loadIndicator.stopAnimating()
+                self.updateTimeValues()
+                
             }
         }
     }
