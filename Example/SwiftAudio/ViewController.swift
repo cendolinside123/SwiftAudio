@@ -81,6 +81,15 @@ class ViewController: UIViewController {
         self.slider.setValue(Float(self.controller.player.currentTime), animated: true)
         self.elapsedTimeLabel.text = self.controller.player.currentTime.secondsToString()
         self.remainingTimeLabel.text = (self.controller.player.duration - self.controller.player.currentTime).secondsToString()
+        
+        if controller.player.playerState == .buffering || controller.player.playerState == .loading {
+            self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.elapsedPlaybackTime(self.controller.player.currentTime))
+            self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(0))
+        }
+        else {
+           self.controller.player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(1))
+        }
+        
     }
     
     func updateMetaData() {
