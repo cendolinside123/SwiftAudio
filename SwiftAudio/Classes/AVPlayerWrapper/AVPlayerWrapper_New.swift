@@ -152,8 +152,10 @@ class AVPlayerWrapper_New:NSObject,AVPlayerWrapperProtocol {
         
     }
     
-    func load(from url: URL, playWhenReady: Bool, initialTime: TimeInterval?, options: [String : Any]?) {
-        
+    func load(from url: URL, playWhenReady: Bool, initialTime: TimeInterval? = nil, options: [String : Any]?) {
+        _initialTime = initialTime
+        self.pause()
+        self.load(from: url, playWhenReady: playWhenReady, options: options)
     }
     
 }
