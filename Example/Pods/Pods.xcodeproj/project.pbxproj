@@ -10,6 +10,7 @@
 		011F1E5DDFC8E0BCC85E6B01AECCE5E4 /* APError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E6290CB6FBCB6BCAB085CDE97AEB /* APError.swift */; };
 		021CDE914201C45273A93853224225C4 /* EndWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B02AAA41C238C7AD46BDE33FA071E39 /* EndWith.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		041090A31415A4F52B4501B024CFC58E /* mach_excServer.c in Sources */ = {isa = PBXBuildFile; fileRef = 01BBAE1633D9148463D045FA991F00DD /* mach_excServer.c */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
+		0419F6AB255E31C40050112B /* AVPlayerWrapper_New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0419F6AA255E31C30050112B /* AVPlayerWrapper_New.swift */; };
 		04E3DCDE2B07B4F9BB4B3A3C30441B07 /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D5F02025D3BA239230538CF754424A /* AudioSession.swift */; };
 		06145E4268BF02913B1E0CA536D440FB /* QuickConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = BFB3D17417C9CC7EB62EFA4A4126ADEB /* QuickConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		068491B5B1C69F25261996D3CD91F3DA /* CwlPreconditionTesting.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B44EF70B536858AF2225E7F65984B0E /* CwlPreconditionTesting.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -186,6 +187,7 @@
 		01BBAE1633D9148463D045FA991F00DD /* mach_excServer.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = mach_excServer.c; path = Carthage/Checkouts/CwlPreconditionTesting/Sources/CwlMachBadInstructionHandler/mach_excServer.c; sourceTree = "<group>"; };
 		0268687FE4D21B343A67C41DBE13C894 /* SwiftAudio.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftAudio.modulemap; sourceTree = "<group>"; };
 		02B2453D14A72AAAA1BCFD8840C6DC94 /* CwlMachBadInstructionHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CwlMachBadInstructionHandler.m; path = Carthage/Checkouts/CwlPreconditionTesting/Sources/CwlMachBadInstructionHandler/CwlMachBadInstructionHandler.m; sourceTree = "<group>"; };
+		0419F6AA255E31C30050112B /* AVPlayerWrapper_New.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerWrapper_New.swift; sourceTree = "<group>"; };
 		064AF894F50A27A8F9A17C6574EBD28A /* NowPlayingInfoController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingInfoController.swift; sourceTree = "<group>"; };
 		0994F1D1AFC2A9E76D39E8906A817937 /* ThrowError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ThrowError.swift; path = Sources/Nimble/Matchers/ThrowError.swift; sourceTree = "<group>"; };
 		0A3F3FB790E1B480DB11C6232C54ABF9 /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/QuickObjectiveC/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 		320FD80924E29D84FCE47ADBD310E4D6 /* AVPlayerWrapper */ = {
 			isa = PBXGroup;
 			children = (
+				0419F6AA255E31C30050112B /* AVPlayerWrapper_New.swift */,
 				B0C8250BDD30941C95B3AB7E8F000A97 /* AVPlayerWrapper.swift */,
 				C216FA0FE3CB678F497D809C89BD36EF /* AVPlayerWrapperDelegate.swift */,
 				E43AEC58B00E040EB2166E6FCD364DD1 /* AVPlayerWrapperProtocol.swift */,
@@ -1006,6 +1009,7 @@
 				1A8F096F13F5C7F9C3F46A0767E6963F /* NowPlayingInfoControllerProtocol.swift in Sources */,
 				C28EDA5B19FD9C8F501754BE1460A79C /* NowPlayingInfoKeyValue.swift in Sources */,
 				5F975077CC1B176BEBB879B3ABE9AEA3 /* NowPlayingInfoProperty.swift in Sources */,
+				0419F6AB255E31C40050112B /* AVPlayerWrapper_New.swift in Sources */,
 				BFD0B9E2F0DD03983D309A2F09CAEEA4 /* QueuedAudioPlayer.swift in Sources */,
 				D291658DD24FEBF18C287B8548DA1B06 /* QueueManager.swift in Sources */,
 				D20D8F23B1AC8290FAC31FEECAFB5F08 /* RemoteCommand.swift in Sources */,
