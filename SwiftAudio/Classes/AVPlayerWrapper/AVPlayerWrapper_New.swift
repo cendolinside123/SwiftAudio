@@ -123,6 +123,15 @@ class AVPlayerWrapper_New:NSObject,AVPlayerWrapperProtocol {
         let seekTime = CMTime(seconds: seconds, preferredTimescale: 1)
         
         player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .positiveInfinity, completionHandler: { [weak self] result in
+            
+            if let _ = self?._initialTime {
+                self?._initialTime = nil
+                if let isPlayWhenReady = self?._playWhenReady, isPlayWhenReady == true{
+                    self?.play()
+                }
+            }
+            self?.delegate?.AVWrapper(seekTo: Int(seconds), didFinish: result)
+            
         })
         
     }
