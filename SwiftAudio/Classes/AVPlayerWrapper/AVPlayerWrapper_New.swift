@@ -111,7 +111,19 @@ class AVPlayerWrapper_New:NSObject,AVPlayerWrapperProtocol {
     }
     
     func togglePlaying() {
-        
+        switch player?.timeControlStatus {
+        case .playing, .waitingToPlayAtSpecifiedRate:
+            pause()
+        case .paused:
+            play()
+        case .none:
+            print("SwiftAudio Unknown AVPlayer.timeControlStatus")
+            break
+        @unknown default:
+            print("SwiftAudio Unknown AVPlayer.timeControlStatus")
+            break
+            //fatalError("Unknown AVPlayer.timeControlStatus")
+        }
     }
     
     func stop() {
