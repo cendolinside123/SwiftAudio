@@ -129,7 +129,7 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
      */
     public init(nowPlayingInfoController: NowPlayingInfoControllerProtocol = NowPlayingInfoController(),
                 remoteCommandController: RemoteCommandController = RemoteCommandController()) {
-        self._wrapper = AVPlayerWrapper()
+        self._wrapper = AVPlayerWrapper_New()
         self.nowPlayingInfoController = nowPlayingInfoController
         self.remoteCommandController = remoteCommandController
         
