@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     
     private var isScrubbing: Bool = false
     private let controller = AudioController.shared
-    private var lastLoadFailed: Bool = false
+    private var lastLoadFailed: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,10 +46,15 @@ class ViewController: UIViewController {
         if !controller.audioSessionController.audioSessionIsActive {
             try? controller.audioSessionController.activateSession()
         }
-        if lastLoadFailed, let item = controller.player.currentItem {
+        if lastLoadFailed {
             lastLoadFailed = false
             errorLabel.isHidden = true
-            try? controller.player.load(item: item, playWhenReady: true)
+            //try? controller.player.load(item: item, playWhenReady: true)
+            do {
+                try controller.player.load(item: DefaultAudioItem(audioUrl: "https://www.eclassical.com/custom/eclassical/files/BIS1447-002-flac_24.flac", artist: "Unknow Artist", title: "Unknow Title", albumTitle: "Unknow Album Title", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")))
+            } catch let error {
+                print("error: \(error)")
+            }
         }
         else {
             controller.player.togglePlaying()
@@ -57,11 +62,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func previous(_ sender: Any) {
-        try? controller.player.previous()
+        //try? controller.player.previous()
     }
     
     @IBAction func next(_ sender: Any) {
-        try? controller.player.next()
+        //try? controller.player.next()
     }
     
     @IBAction func startScrubbing(_ sender: UISlider) {
@@ -122,6 +127,16 @@ class ViewController: UIViewController {
                 self.loadIndicator.stopAnimating()
                 self.updateMetaData()
                 self.updateTimeValues()
+                self.controller.player.play()
+                
+                do {
+                    try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+                    print("re setup AVAudioSession")
+                }
+                catch {
+                    print("Setting category to AVAudioSessionCategoryPlayback failed.")
+                }
+                
             case .playing, .paused, .idle:
                 self.loadIndicator.stopAnimating()
                 self.updateTimeValues()
@@ -136,6 +151,7 @@ class ViewController: UIViewController {
     func handleAudioPlayerSecondElapsed(data: AudioPlayer.SecondElapseEventData) {
         if !isScrubbing {
             DispatchQueue.main.async {
+                self.lastLoadFailed = false
                 self.updateTimeValues()
             }
         }
@@ -161,6 +177,35 @@ class ViewController: UIViewController {
                 lastLoadFailed = true
                 DispatchQueue.main.async {
                     self.setErrorMessage("Network disconnected. Please try again...")
+                }
+            }
+            else {
+                DispatchQueue.main.async {
+                    self.lastLoadFailed = true
+                    //self.controller.player.stop()
+                    do {
+                        print("do retry")
+                        
+                        self.controller.player.stop()
+                        try self.controller.player.load(item: DefaultAudioItem(audioUrl: "https://www.eclassical.com/custom/eclassical/files/BIS1447-002-flac_24.flac", artist: "Unknow Artist", title: "Unknow Title", albumTitle: "Unknow Album Title", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")), playWhenReady: false)
+                    } catch let nerror{
+                        self.setErrorMessage(error.localizedDescription)
+                        print("error: \(nerror)")
+                    }
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.lastLoadFailed = true
+                //self.controller.player.stop()
+                do {
+                    print("do retry")
+                    
+                    self.controller.player.stop()
+                    try self.controller.player.load(item: self.controller.sources[0], playWhenReady: false)
+                } catch let nerror {
+                    self.setErrorMessage(nerror.localizedDescription)
+                    print("error: \(nerror)")
                 }
             }
         }
