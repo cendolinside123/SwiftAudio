@@ -119,8 +119,10 @@ class AVPlayerWrapper_New:NSObject,AVPlayerWrapperProtocol {
         switch player?.timeControlStatus {
         case .playing, .waitingToPlayAtSpecifiedRate:
             pause()
+            _state = .paused
         case .paused:
             play()
+            _state = .playing
         case .none:
             print("SwiftAudio Unknown AVPlayer.timeControlStatus")
             break
@@ -162,10 +164,12 @@ class AVPlayerWrapper_New:NSObject,AVPlayerWrapperProtocol {
         if currentItem?.status == .failed {
             //recreateAVPlayer()
             print("player retry to load")
-            self.load(from: url, playWhenReady: playWhenReady, options: options)
+            //self.load(from: url, playWhenReady: playWhenReady, options: options)
         }
         
-        self._pendingAsset = AVURLAsset(url: url, options: options)
+        let opt = [AVURLAssetPreferPreciseDurationAndTimingKey:true]
+        
+        self._pendingAsset = AVURLAsset(url: url, options: opt)
         self._state = .loading
         
         if let getURL = self._pendingAsset {
