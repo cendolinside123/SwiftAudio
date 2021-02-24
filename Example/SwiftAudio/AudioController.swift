@@ -13,20 +13,17 @@ import SwiftAudio
 class AudioController {
     
     static let shared = AudioController()
-    let player: QueuedAudioPlayer
+    let player: AudioPlayer
     let audioSessionController = AudioSessionController.shared
     
     let sources: [AudioItem] = [
-        DefaultAudioItem(audioUrl: "https://p.scdn.co/mp3-preview/67b51d90ffddd6bb3f095059997021b589845f81?cid=d8a5ed958d274c2e8ee717e6a4b0971d", artist: "Bon Iver", title: "33 \"GOD\"", albumTitle: "22, A Million", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")),
-        DefaultAudioItem(audioUrl: "https://p.scdn.co/mp3-preview/081447adc23dad4f79ba4f1082615d1c56edf5e1?cid=d8a5ed958d274c2e8ee717e6a4b0971d", artist: "Bon Iver", title: "8 (circle)", albumTitle: "22, A Million", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")),
-        DefaultAudioItem(audioUrl: "https://p.scdn.co/mp3-preview/6f9999d909b017eabef97234dd7a206355720d9d?cid=d8a5ed958d274c2e8ee717e6a4b0971d", artist: "Bon Iver", title: "715 - CRΣΣKS", albumTitle: "22, A Million", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")),
-        DefaultAudioItem(audioUrl: "https://p.scdn.co/mp3-preview/bf9bdd403c67fdbe06a582e7b292487c8cfd1f7e?cid=d8a5ed958d274c2e8ee717e6a4b0971d", artist: "Bon Iver", title: "____45_____", albumTitle: "22, A Million", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")),
-        DefaultAudioItem(audioUrl: "https://www.eclassical.com/custom/eclassical/files/BIS1447-002-flac_24.flac", artist: "Unknow Artist", title: "Unknow Title", albumTitle: "Unknow Album Title", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI"))
+        DefaultAudioItem(audioUrl: "https://www.eclassical.com/custom/eclassical/files/BIS1447-002-flac_24.flac", artist: "Unknow Artist", title: "Unknow Title", albumTitle: "Unknow Album Title", sourceType: .stream, artwork: #imageLiteral(resourceName: "22AMI")),
+        DefaultAudioItem(audioUrl: "\(Bundle.main.path(forResource: "BIS1447-002-flac_24", ofType: "flac")!)", artist: "Unknow Artist - 1", title: "Unknow Title - 1", albumTitle: "Unknow Album -1 ", sourceType: .file, artwork: #imageLiteral(resourceName: "22AMI"))
     ]
     
     init() {
         let controller = RemoteCommandController()
-        player = QueuedAudioPlayer(remoteCommandController: controller)
+        player = AudioPlayer()
         player.remoteCommands = [
             .stop,
             .play,
@@ -36,8 +33,15 @@ class AudioController {
             .previous,
             .changePlaybackPosition
         ]
-        try? audioSessionController.set(category: .playback)
-        try? player.add(items: sources, playWhenReady: false)
+        
+        do {
+            try audioSessionController.set(category: .playback)
+        } catch let error {
+            print("session error: \(error)")
+        }
+        
+//        try? audioSessionController.set(category: .playback)
+        //try? player.add(items: sources, playWhenReady: false)
     }
     
 }
